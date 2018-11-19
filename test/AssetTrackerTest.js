@@ -16,15 +16,15 @@ const timeTravel = async seconds => {
 contract('AssetTracker', (accounts) => {
     it('Checks addProduct and getProduct', async function() {
         return Asset.deployed().then(async function(instance) {
-            await instance.addProduct(id, "Laptop", "Electronics", 100);
-            await instance.addProduct(id2, "Mobile", "Electronics", 200);
+            await instance.addProduct(id, "Laptop", "Electronics", 40);
+            await instance.addProduct(id2, "Mobile", "Electronics", 80);
             return instance;
         }).then(async function(instance) {
             const prd = await instance.getProduct(id);
             assert.equal(prd[0], "Laptop", "Name set");
             assert.equal(prd[1], "Electronics", "Category set");
             const tokens = await instance.getTokens(id);
-            // console.log(tokens)
+            console.log(tokens)
         });
     });
 

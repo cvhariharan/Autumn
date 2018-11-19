@@ -1,2 +1,4 @@
 build
 solidity-util
+private_key
+.env

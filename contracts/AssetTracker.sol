@@ -60,7 +60,7 @@ contract AssetTracker {
     event ProductTransferred(string id, address from, address to, uint quantity);
     event AddToCart(uint order, string id, uint quantity);
     event OrderTransferred(string orderId, address from, address to);
-    event OrderPlaced(uint orderId);
+    event OrderPlaced(uint orderId, address by);
 
     constructor(string name) {
         seller = msg.sender;
@@ -161,7 +161,15 @@ contract AssetTracker {
     function placeOrder(uint _orderId) public{
         require(ordersList[_orderId].owner == msg.sender, "Only order creator can place order");
         ordersList[_orderId].owner = seller;
-        emit OrderPlaced(_orderId);
+        emit OrderPlaced(_orderId, msg.sender);
+    }
+
+    function buyOrder(uint _orderId, address to) public {
+        Order order = ordersList[_orderId]
+        require(msg.sender == order.owner);
+        for(uint256 i = 0 ; i < order.ordersList.length; i++) {
+            transferProduct(to, order.ordersList[i], order.cart[order.ordersList[i]]);
+        }
     }
 
     function createOrderId() public {
@@ -169,7 +177,8 @@ contract AssetTracker {
     }
 
     function getOrderId() public view returns(uint orderNonce) {
-        return orderNonce;
+        return uint8(uint256(keccak256(block.timestamp, block.difficulty, block.number)));
+
     }
 
     function transferOrder(string _orderId, address to) public {
