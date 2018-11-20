@@ -165,7 +165,7 @@ contract AssetTracker {
     }
 
     function buyOrder(uint _orderId, address to) public {
-        Order order = ordersList[_orderId]
+        Order order = ordersList[_orderId];
         require(msg.sender == order.owner);
         for(uint256 i = 0 ; i < order.ordersList.length; i++) {
             transferProduct(to, order.ordersList[i], order.cart[order.ordersList[i]]);
